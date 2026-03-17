@@ -88,6 +88,8 @@ nextBtn.onclick = () => {
 };
 
 loadQuestion();
+audio.pause();
+audio.currentTime = 0;
 progressBar.value = 0;
 currentTimeEl.textContent = "0:00";
 durationEl.textContent = "0:00";
