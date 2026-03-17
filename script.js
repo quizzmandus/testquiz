@@ -1,129 +1,40 @@
-const questions = [
-  {color:"#6ec6ff", audio:"assets/q1.mp3", hints:["Indice 1A","Indice 1B"], answer:"Réponse 1"},
-  {color:"#1976d2", audio:"assets/q2.mp3", hints:["Indice 2A","Indice 2B"], answer:"Réponse 2"},
-  {color:"#ff80ab", audio:"assets/q3.mp3", hints:["Indice 3A","Indice 3B"], answer:"Réponse 3"},
-  {color:"#d32f2f", audio:"assets/q4.mp3", hints:["Indice 4A","Indice 4B"], answer:"Réponse 4"},
-  {color:"#ff9800", audio:"assets/q5.mp3", hints:["Indice 5A","Indice 5B"], answer:"Réponse 5"},
-  {color:"#4caf50", audio:"assets/q6.mp3", hints:["Indice 6A","Indice 6B"], answer:"Réponse 6"},
-  {color:"#ffeb3b", audio:"assets/q7.mp3", hints:["Indice 7A","Indice 7B"], answer:"Réponse 7"},
-  { 
-  color:"#6ec6ff",
-  audio:"assets/q1.mp3",
-  hints:["Indice 1A","Indice 1B"],
-  answer:"Réponse 1",
-  info:"Détail ou anecdote sur la chanson"
-}
-];
-
-let current = 0;
-let timer;
-let audio;
-
-const carousel = document.getElementById("carousel");
-
-function render() {
-  carousel.innerHTML = "";
-
-  questions.forEach((q, i) => {
-    const div = document.createElement("div");
-    div.className = "vinyl";
-    div.style.background = q.color;
-
-    let offset = i - current;
-    div.style.transform = `translateX(${offset * 220}px) scale(${i === current ? 1.2 : 0.8})`;
-    div.style.opacity = i === current ? 1 : 0.5;
-
-   div.innerHTML = `
-  <div class="label">Question N°${i+1}</div>
-  <button onclick="toggleAudio(${i})">▶</button>
-  <div class="wave" id="wave${i}" style="display:none;"></div>
-`;
-
-    carousel.appendChild(div);
-  });
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* important pour passer au-dessus */
 }
 
-function startTimer() {
- 
-  let time = 0;
- document.getElementById("moreInfo").style.display = "none";
-  document.getElementById("hint1").textContent = "";
-  document.getElementById("hint2").textContent = "";
-  document.getElementById("answer").textContent = "";
-
-  timer = setInterval(() => {
-    time++;
-
-    if(time === 10){
-      document.getElementById("hint1").textContent = questions[current].hints[0];
-    }
-    if(time === 15){
-      document.getElementById("hint2").textContent = questions[current].hints[1];
-    }
-  if(time === 20){
-  document.getElementById("answer").textContent = questions[current].answer;
-  document.getElementById("moreInfo").style.display = "inline-block";
-
-  if (navigator.vibrate) navigator.vibrate(500);
-
-  clearInterval(timer);
-}
-  },1000);
+.popup.hidden {
+  display: none;
 }
 
-ffunction toggleAudio(i){
-  if(audio) audio.pause();
-
-  audio = new Audio(questions[i].audio);
-  audio.play();
-
-  // Activer rotation vinyle
-  document.querySelectorAll(".vinyl").forEach(v => v.classList.remove("spin"));
-  document.querySelectorAll(".vinyl")[i].classList.add("spin");
-
-  // Activer bras
-  document.getElementById("tonearm").classList.add("active");
-
-  // Wave animation
-  document.querySelectorAll(".wave").forEach(w => w.style.display="none");
-  document.getElementById("wave"+i).style.display="block";
-
-  // Quand musique stop
-  audio.onended = () => {
-    document.getElementById("tonearm").classList.remove("active");
-  };
+.popup-content {
+  background: #fff;
+  color: #000;
+  padding: 20px;
+  border-radius: 15px;
+  width: 80%;
+  max-width: 300px;
+  text-align: center;
+  animation: pop 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2); /* effet plus propre */
 }
 
-  document.querySelectorAll(".wave").forEach(w => w.style.display="none");
-  document.getElementById("wave"+i).style.display="block";
+/* Animation corrigée + fluide */
+@keyframes pop {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
-
-document.getElementById("next").onclick = () => {
-  current = (current + 1) % questions.length;
-  render();
-  startTimer();
-};
-
-document.getElementById("showAnswer").onclick = () => {
-  document.getElementById("answer").textContent = questions[current].answer;
-};
-
-let startX = 0;
-
-carousel.addEventListener("touchstart", e => startX = e.touches[0].clientX);
-carousel.addEventListener("touchend", e => {
-  let endX = e.changedTouches[0].clientX;
-  if(startX - endX > 50) current++;
-  if(endX - startX > 50) current--;
-  if(current < 0) current = questions.length -1;
-  if(current >= questions.length) current = 0;
-
-  render();
-  startTimer();
-});
-
-render();
-startTimer();
-document.getElementById("moreInfo").onclick = () => {
-  alert(questions[current].info);
-};
