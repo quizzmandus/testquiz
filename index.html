@@ -1,32 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Vinyle Pro</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
 <body>
 
-<h1 class="title">🎵 Blind Test Vinyle</h1>
+<h1>🎧 Blind Test</h1>
 
-<div class="turntable">
-  <div class="carousel" id="carousel"></div>
+<div class="arc-container">
+  <div class="disque c1" onclick="playQ(0,this)">▶</div>
+  <div class="disque c2" onclick="playQ(1,this)">▶</div>
+  <div class="disque c3" onclick="playQ(2,this)">▶</div>
+  <div class="disque c4 focus" onclick="playQ(3,this)">▶</div>
+  <div class="disque c5" onclick="playQ(4,this)">▶</div>
+  <div class="disque c6" onclick="playQ(5,this)">▶</div>
+  <div class="disque c7" onclick="playQ(6,this)">▶</div>
 </div>
 
-<div class="info">
-  <p id="hint1"></p>
-  <p id="hint2"></p>
-  <h2 id="answer"></h2>
-
-  <button id="showAnswer">Voir la réponse</button>
-  <button id="next">Question suivante</button>
+<div id="indices">
+  <p id="i1"></p>
+  <p id="i2"></p>
 </div>
 
-<button id="moreInfo" style="display:none;">Plus d'info</button>
+<div id="reponse"></div>
 
-<div class="popup hidden">
-  <div class="popup-content">
-    <h2>Résultat</h2>
-    <p>Score: 5/10</p>
-    <button onclick="closePopup()">Fermer</button>
-  </div>
+<div class="actions">
+  <button onclick="showAnswer()">Voir la réponse</button>
+  <button onclick="nextQ()">Question suivante</button>
 </div>
 
 <script src="script.js"></script>
-
-</body>
 </body>
 </html>
