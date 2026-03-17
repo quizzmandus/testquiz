@@ -90,6 +90,12 @@ nextBtn.onclick = () => {
 loadQuestion();
 audio.pause();
 audio.currentTime = 0;
+
+progressBar.value = 0;
+currentTimeEl.textContent = "0:00";
+durationEl.textContent = "0:00";
+audio.pause();
+audio.currentTime = 0;
 progressBar.value = 0;
 currentTimeEl.textContent = "0:00";
 durationEl.textContent = "0:00";
@@ -108,6 +114,8 @@ audio.addEventListener("loadedmetadata", () => {
 });
 
 progressBar.addEventListener("input", () => {
+  if (!audio.duration) return;
+
   const time = (progressBar.value / 100) * audio.duration;
   audio.currentTime = time;
 });
