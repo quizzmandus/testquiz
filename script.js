@@ -1,159 +1,98 @@
-const audios = Array.from({length:7},(_,i)=>new Audio('audio/q'+(i+1)+'.mp3'));
+const questions = [
+  {color:"#6ec6ff", audio:"assets/q1.mp3", hints:["Indice 1A","Indice 1B"], answer:"Réponse 1"},
+  {color:"#1976d2", audio:"assets/q2.mp3", hints:["Indice 2A","Indice 2B"], answer:"Réponse 2"},
+  {color:"#ff80ab", audio:"assets/q3.mp3", hints:["Indice 3A","Indice 3B"], answer:"Réponse 3"},
+  {color:"#d32f2f", audio:"assets/q4.mp3", hints:["Indice 4A","Indice 4B"], answer:"Réponse 4"},
+  {color:"#ff9800", audio:"assets/q5.mp3", hints:["Indice 5A","Indice 5B"], answer:"Réponse 5"},
+  {color:"#4caf50", audio:"assets/q6.mp3", hints:["Indice 6A","Indice 6B"], answer:"Réponse 6"},
+  {color:"#ffeb3b", audio:"assets/q7.mp3", hints:["Indice 7A","Indice 7B"], answer:"Réponse 7"},
+];
 
-let current = 3;
-let ctx, analyser, source;
-let isPlaying = false;
-let rotation = 0;
-let isDragging = false;
-let lastX = 0;
+let current = 0;
+let timer;
+let audio;
 
-// AUDIO CONTEXT (visualizer)
-function initAudio(audio){
-  if(!ctx){
-    ctx = new (window.AudioContext || window.webkitAudioContext)();
-  }
+const carousel = document.getElementById("carousel");
 
-  analyser = ctx.createAnalyser();
-  analyser.fftSize = 64;
+function render() {
+  carousel.innerHTML = "";
 
-  source = ctx.createMediaElementSource(audio);
-  source.connect(analyser);
-  analyser.connect(ctx.destination);
-}
+  questions.forEach((q, i) => {
+    const div = document.createElement("div");
+    div.className = "vinyl";
+    div.style.background = q.color;
 
-// PLAY
-function playQ(i, el){
-  stopAll();
-  current = i;
+    let offset = i - current;
+    div.style.transform = `translateX(${offset * 220}px) scale(${i === current ? 1.2 : 0.8})`;
+    div.style.opacity = i === current ? 1 : 0.5;
 
-  let audio = audios[i];
-  initAudio(audio);
-
-  audio.play();
-  isPlaying = true;
-
-  el.classList.add("playing");
-
-  animateVinyl(el);
-}
-
-// STOP
-function stopAll(){
-  audios.forEach(a=>{
-    a.pause();
-    a.currentTime = 0;
-  });
-
-  document.querySelectorAll('.disque').forEach(d=>{
-    d.classList.remove('playing');
-  });
-
-  isPlaying = false;
-}
-
-// 🎧 VISUALIZER + ROTATION
-function animateVinyl(el){
-  const dataArray = new Uint8Array(analyser.frequencyBinCount);
-
-  function loop(){
-    if(!isPlaying) return;
-
-    analyser.getByteFrequencyData(dataArray);
-
-    let avg = dataArray.reduce((a,b)=>a+b,0)/dataArray.length;
-
-    // vitesse rotation selon musique
-    rotation += avg * 0.02;
-
-    el.style.transform = `rotate(${rotation}deg)`;
-
-    // effet lumière dynamique
-    el.style.boxShadow = `
-      0 0 ${avg/2}px rgba(255,255,255,0.2),
-      inset 0 0 ${avg/3}px rgba(255,255,255,0.1)
+    div.innerHTML = `
+      Question ${i+1}
+      <button onclick="toggleAudio(${i})">▶</button>
+      <div class="wave" id="wave${i}" style="display:none;"></div>
     `;
 
-    requestAnimationFrame(loop);
-  }
-
-  loop();
+    carousel.appendChild(div);
+  });
 }
 
-//////////////////////////////////////////////////
-// 🖐️ SCRATCH EFFECT (drag)
-//////////////////////////////////////////////////
+function startTimer() {
+  let time = 0;
 
-document.addEventListener("pointerdown", e=>{
-  isDragging = true;
-  lastX = e.clientX;
-});
+  document.getElementById("hint1").textContent = "";
+  document.getElementById("hint2").textContent = "";
+  document.getElementById("answer").textContent = "";
 
-document.addEventListener("pointermove", e=>{
-  if(!isDragging) return;
+  timer = setInterval(() => {
+    time++;
 
-  let delta = e.clientX - lastX;
-  rotation += delta * 0.5;
+    if(time === 10){
+      document.getElementById("hint1").textContent = questions[current].hints[0];
+    }
+    if(time === 15){
+      document.getElementById("hint2").textContent = questions[current].hints[1];
+    }
+    if(time === 20){
+      document.getElementById("answer").textContent = questions[current].answer;
+      navigator.vibrate(500);
+      clearInterval(timer);
+    }
+  },1000);
+}
 
-  document.querySelectorAll('.disque.playing').forEach(d=>{
-    d.style.transform = `rotate(${rotation}deg)`;
-  });
+function toggleAudio(i){
+  if(audio) audio.pause();
 
-  lastX = e.clientX;
-});
+  audio = new Audio(questions[i].audio);
+  audio.play();
 
-document.addEventListener("pointerup", ()=>{
-  isDragging = false;
-});
+  document.querySelectorAll(".wave").forEach(w => w.style.display="none");
+  document.getElementById("wave"+i).style.display="block";
+}
 
-//////////////////////////////////////////////////
-// 👉 SWIPE CAROUSEL (inertie)
-//////////////////////////////////////////////////
+document.getElementById("next").onclick = () => {
+  current = (current + 1) % questions.length;
+  render();
+  startTimer();
+};
+
+document.getElementById("showAnswer").onclick = () => {
+  document.getElementById("answer").textContent = questions[current].answer;
+};
 
 let startX = 0;
-let scrollLeft = 0;
-const carousel = document.querySelector(".arc-container");
 
-if(carousel){
-  carousel.addEventListener("pointerdown", e=>{
-    startX = e.pageX;
-    scrollLeft = carousel.scrollLeft;
-  });
+carousel.addEventListener("touchstart", e => startX = e.touches[0].clientX);
+carousel.addEventListener("touchend", e => {
+  let endX = e.changedTouches[0].clientX;
+  if(startX - endX > 50) current++;
+  if(endX - startX > 50) current--;
+  if(current < 0) current = questions.length -1;
+  if(current >= questions.length) current = 0;
 
-  carousel.addEventListener("pointermove", e=>{
-    if(e.buttons !== 1) return;
-    let x = e.pageX;
-    let walk = (x - startX) * 1.5;
-    carousel.scrollLeft = scrollLeft - walk;
-  });
-}
+  render();
+  startTimer();
+});
 
-//////////////////////////////////////////////////
-// ⏱️ TIMER + INDICES
-//////////////////////////////////////////////////
-
-let t1,t2,t3;
-
-function launchTimers(){
-  clearTimeout(t1);clearTimeout(t2);clearTimeout(t3);
-
-  document.getElementById('i1').innerText='';
-  document.getElementById('i2').innerText='';
-  document.getElementById('reponse').innerText='';
-
-  t1 = setTimeout(()=>{
-    document.getElementById('i1').innerText="Indice 1";
-  },10000);
-
-  t2 = setTimeout(()=>{
-    document.getElementById('i2').innerText="Indice 2";
-  },15000);
-
-  t3 = setTimeout(showAnswer,20000);
-}
-
-function showAnswer(){
-  document.getElementById('reponse').innerText="Réponse !!!";
-
-  if(navigator.vibrate){
-    navigator.vibrate([200,100,200]);
-  }
+render();
+startTimer();
