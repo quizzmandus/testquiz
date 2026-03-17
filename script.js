@@ -6,6 +6,13 @@ const questions = [
   {color:"#ff9800", audio:"assets/q5.mp3", hints:["Indice 5A","Indice 5B"], answer:"Réponse 5"},
   {color:"#4caf50", audio:"assets/q6.mp3", hints:["Indice 6A","Indice 6B"], answer:"Réponse 6"},
   {color:"#ffeb3b", audio:"assets/q7.mp3", hints:["Indice 7A","Indice 7B"], answer:"Réponse 7"},
+  { 
+  color:"#6ec6ff",
+  audio:"assets/q1.mp3",
+  hints:["Indice 1A","Indice 1B"],
+  answer:"Réponse 1",
+  info:"Détail ou anecdote sur la chanson"
+}
 ];
 
 let current = 0;
@@ -37,8 +44,9 @@ function render() {
 }
 
 function startTimer() {
+ 
   let time = 0;
-
+ document.getElementById("moreInfo").style.display = "none";
   document.getElementById("hint1").textContent = "";
   document.getElementById("hint2").textContent = "";
   document.getElementById("answer").textContent = "";
@@ -99,3 +107,6 @@ carousel.addEventListener("touchend", e => {
 
 render();
 startTimer();
+document.getElementById("moreInfo").onclick = () => {
+  alert(questions[current].info);
+};
