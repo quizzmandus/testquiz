@@ -1,32 +1,57 @@
-const audios = {
-  q1: new Audio("sound\Question 1.mp3"),
-  q2: new Audio("audio/q2.mp3"),
-  q3: new Audio("audio/q3.mp3")
-};
+const audios = Array.from({length:7},(_,i)=>new Audio('audio/q'+(i+1)+'.mp3'));
 
-function stopAll() {
-  Object.values(audios).forEach(a => {
+let current = 3;
+let timer1, timer2, timer3;
+
+function stopAll(){
+  audios.forEach(a=>{
     a.pause();
     a.currentTime = 0;
   });
-  document.querySelectorAll('.disque').forEach(d => d.classList.remove('playing'));
+
+  document.querySelectorAll('.disque').forEach(d=>{
+    d.classList.remove('playing');
+  });
+
+  clearTimeout(timer1);
+  clearTimeout(timer2);
+  clearTimeout(timer3);
 }
 
-function playQuestion(q, el) {
+function playQ(i, el){
   stopAll();
-  const audio = audios[q];
+  current = i;
+
+  let audio = audios[i];
   audio.play();
+
   el.classList.add('playing');
 
-  // indices
-  document.getElementById("Dans le titre").innerText = "Pluie";
-  setTimeout(() => {
-    document.getElementById("indice2").innerText = "Indice 2...";
-  }, 5000);
+  document.getElementById('i1').innerText='';
+  document.getElementById('i2').innerText='';
+  document.getElementById('reponse').innerText='';
 
-  // réponse après 20s
-  setTimeout(() => {
-    document.getElementById("reponse").innerText = "Réponse !!!";
-    if (navigator.vibrate) navigator.vibrate(200);
-  }, 20000);
+  timer1 = setTimeout(()=>{
+    document.getElementById('i1').innerText = "Indice 1";
+  },10000);
+
+  timer2 = setTimeout(()=>{
+    document.getElementById('i2').innerText = "Indice 2";
+  },15000);
+
+  timer3 = setTimeout(showAnswer,20000);
+}
+
+function showAnswer(){
+  document.getElementById('reponse').innerText = "Réponse !!!";
+
+  if(navigator.vibrate){
+    navigator.vibrate([200,100,200]);
+  }
+}
+
+function nextQ(){
+  let next = (current + 1) % 7;
+  let el = document.querySelectorAll('.disque')[next];
+  playQ(next, el);
 }
