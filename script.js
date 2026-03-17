@@ -93,10 +93,12 @@ audio.currentTime = 0;
 progressBar.value = 0;
 currentTimeEl.textContent = "0:00";
 durationEl.textContent = "0:00";
-  audio.addEventListener("timeupdate", () => {
+ audio.addEventListener("timeupdate", () => {
   const progress = audio.duration 
-  ? (audio.currentTime / audio.duration) * 100 
-  : 0;
+    ? (audio.currentTime / audio.duration) * 100 
+    : 0;
+
+  progressBar.value = progress; // 🔥 manquant
 
   currentTimeEl.textContent = formatTime(audio.currentTime);
 });
