@@ -71,11 +71,28 @@ function startTimer() {
   },1000);
 }
 
-function toggleAudio(i){
+ffunction toggleAudio(i){
   if(audio) audio.pause();
 
   audio = new Audio(questions[i].audio);
   audio.play();
+
+  // Activer rotation vinyle
+  document.querySelectorAll(".vinyl").forEach(v => v.classList.remove("spin"));
+  document.querySelectorAll(".vinyl")[i].classList.add("spin");
+
+  // Activer bras
+  document.getElementById("tonearm").classList.add("active");
+
+  // Wave animation
+  document.querySelectorAll(".wave").forEach(w => w.style.display="none");
+  document.getElementById("wave"+i).style.display="block";
+
+  // Quand musique stop
+  audio.onended = () => {
+    document.getElementById("tonearm").classList.remove("active");
+  };
+}
 
   document.querySelectorAll(".wave").forEach(w => w.style.display="none");
   document.getElementById("wave"+i).style.display="block";
