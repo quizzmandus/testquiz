@@ -1,119 +1,78 @@
-body{
-  margin:0;
-  background:#0b3d91;
-  color:white;
-  font-family:sans-serif;
-  text-align:center;
-  overflow:hidden;
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background: #0a3d91;
+  color: white;
+  text-align: center;
+  overflow: hidden;
 }
 
-h1{
-  margin-top:20px;
+.title {
+  margin: 20px;
 }
 
-/* ARC 3D */
-.arc-container{
-  position:relative;
-  height:320px;
-  margin-top:40px;
+.carousel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+  perspective: 1000px;
 }
 
-/* DISQUE */
-.disque{
-  width:130px;
-  height:130px;
-  border-radius:50%;
-  position:absolute;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:30px;
-  cursor:pointer;
-  box-shadow:0 10px 30px rgba(0,0,0,0.6);
-  transition:all 0.3s ease;
+.vinyl {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  transition: transform 0.5s, opacity 0.5s;
 }
 
-/* Focus centre */
-.focus{
-  transform:translateX(-50%) scale(1.3);
-  z-index:10;
+.vinyl::before {
+  content: "";
+  width: 30px;
+  height: 30px;
+  background: black;
+  border-radius: 50%;
+  position: absolute;
 }
 
-/* positions arc */
-.disque:nth-child(1){left:5%; top:150px; opacity:0.5;}
-.disque:nth-child(2){left:20%; top:80px; opacity:0.7;}
-.disque:nth-child(3){left:35%; top:30px;}
-.disque:nth-child(4){left:50%; top:0; transform:translateX(-50%) scale(1.3);}
-.disque:nth-child(5){left:65%; top:30px;}
-.disque:nth-child(6){left:80%; top:80px; opacity:0.7;}
-.disque:nth-child(7){left:92%; top:150px; opacity:0.5;}
-
-/* couleurs */
-.c1{background:#6ec6ff;}
-.c2{background:#2196f3;}
-.c3{background:#ff80ab;}
-.c4{background:#f44336;}
-.c5{background:#ff9800;}
-.c6{background:#4caf50;}
-.c7{background:#ffeb3b;color:black;}
-
-/* rotation vinyle */
-.playing{
-  animation:spin 4s linear infinite;
+.spin {
+  animation: spin 3s linear infinite;
 }
 
-@keyframes spin{
-  from{transform:rotate(0deg);}
-  to{transform:rotate(360deg);}
+@keyframes spin {
+  100% { transform: rotate(360deg); }
 }
 
-/* visualizer fake */
-.wave{
-  position:absolute;
-  bottom:-15px;
-  width:70%;
-  height:6px;
-  background:white;
-  opacity:0;
+.info {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
 }
 
-.playing .wave{
-  opacity:1;
-  animation:wave 0.8s infinite alternate;
+button {
+  margin: 5px;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background: white;
+  color: black;
 }
 
-@keyframes wave{
-  from{transform:scaleX(0.5);}
-  to{transform:scaleX(1);}
+.wave {
+  width: 50px;
+  height: 10px;
+  background: white;
+  margin-top: 10px;
+  animation: wave 1s infinite;
 }
 
-/* indices */
-#indices{
-  margin-top:20px;
-  font-size:18px;
-}
-
-/* réponse */
-#reponse{
-  position:fixed;
-  bottom:120px;
-  width:100%;
-  font-size:36px;
-  font-weight:bold;
-}
-
-/* boutons */
-.actions{
-  position:fixed;
-  bottom:20px;
-  width:100%;
-}
-
-button{
-  padding:10px 20px;
-  margin:5px;
-  border:none;
-  border-radius:20px;
-  font-size:16px;
-  cursor:pointer;
+@keyframes wave {
+  0% { transform: scaleY(1); }
+  50% { transform: scaleY(2); }
+  100% { transform: scaleY(1); }
 }
