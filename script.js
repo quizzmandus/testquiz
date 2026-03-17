@@ -16,17 +16,47 @@ let current = 0;
 
 const questions = [
   {
-    audio: "music1.mp3",
-    hint1: "Artiste : Michael Jackson",
-    hint2: "Année : 1982",
-    answer: "Billie Jean"
+    audio: "Question 1.mp3",
+    hint1: "Dans le titre",
+    hint2: "Pluie",
+    answer: "Parapluie"
   },
   {
-    audio: "music2.mp3",
-    hint1: "Groupe : Nirvana",
-    hint2: "Année : 1991",
-    answer: "Smells Like Teen Spirit"
-  }
+    audio: "Question 2.mp3",
+    hint1: "Boxe",
+    hint2: "Mains",
+    answer: "Gants"
+  },
+   {
+    audio: "Question 3.mp3",
+    hint1: "Dans le titre",
+    hint2: "Elle est noire",
+    answer: "Chemise"
+  },
+   {
+    audio: "Question 4.mp3",
+    hint1: "Dans le titre ",
+    hint2: "Cité au début de la chanson",
+    answer: "Basket (Adidas)"
+  },
+   {
+    audio: "Question 5.mp3",
+    hint1: "Dans le titre",
+    hint2: "Marine",
+    answer: "Pull"
+  },
+   {
+    audio: "Question 6.mp3",
+    hint1: "Dans le titre",
+    hint2: "Emma Peel",
+    answer: "chapeau ou bottes"
+  },
+   {
+    audio: "Question 7.mp3",
+    hint1: "Eric Cartman",
+    hint2: "Sur la tête",
+    answer: "Bonnet"
+  },
 ];
 
 function clearTimers() {
