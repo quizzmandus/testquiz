@@ -86,10 +86,11 @@ nextBtn.onclick = () => {
 
   loadQuestion();
 };
+
+loadQuestion();
 progressBar.value = 0;
 currentTimeEl.textContent = "0:00";
 durationEl.textContent = "0:00";
-loadQuestion();
   audio.addEventListener("timeupdate", () => {
   const progress = (audio.currentTime / audio.duration) * 100;
   progressBar.value = progress || 0;
