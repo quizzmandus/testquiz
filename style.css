@@ -4,6 +4,10 @@ body {
   background: linear-gradient(180deg, #121212, #000);
   color: white;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 /* 📱 Full mobile width */
