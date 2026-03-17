@@ -26,11 +26,11 @@ function render() {
     div.style.transform = `translateX(${offset * 220}px) scale(${i === current ? 1.2 : 0.8})`;
     div.style.opacity = i === current ? 1 : 0.5;
 
-    div.innerHTML = `
-      Question ${i+1}
-      <button onclick="toggleAudio(${i})">▶</button>
-      <div class="wave" id="wave${i}" style="display:none;"></div>
-    `;
+   div.innerHTML = `
+  <div class="label">Question N°${i+1}</div>
+  <button onclick="toggleAudio(${i})">▶</button>
+  <div class="wave" id="wave${i}" style="display:none;"></div>
+`;
 
     carousel.appendChild(div);
   });
