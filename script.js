@@ -44,7 +44,7 @@ function loadQuestion() {
   hint2.textContent = "";
   answer.textContent = "";
 
-  // 🔥 reset propre ici
+  // reset
   audio.pause();
   audio.currentTime = 0;
 
@@ -54,6 +54,13 @@ function loadQuestion() {
 
   clearTimers();
 }
+
+// ▶️ PLAY
+playBtn.onclick = () => {
+  const q = questions[current];
+
+  audio.play();
+  clearTimers();
 
   timers.push(setTimeout(() => {
     hint1.textContent = "Indice 1 : " + q.hint1;
@@ -72,13 +79,14 @@ function loadQuestion() {
   }, 20000));
 };
 
+// ⏸ PAUSE
 pauseBtn.onclick = () => {
   audio.pause();
   clearTimers();
 };
 
+// ➡️ NEXT
 nextBtn.onclick = () => {
-  audio.pause();
   current++;
 
   if (current >= questions.length) {
@@ -89,25 +97,13 @@ nextBtn.onclick = () => {
   loadQuestion();
 };
 
-loadQuestion();
-audio.pause();
-audio.currentTime = 0;
-
-progressBar.value = 0;
-currentTimeEl.textContent = "0:00";
-durationEl.textContent = "0:00";
-audio.pause();
-audio.currentTime = 0;
-progressBar.value = 0;
-currentTimeEl.textContent = "0:00";
-durationEl.textContent = "0:00";
- audio.addEventListener("timeupdate", () => {
+// 🎵 PROGRESSION
+audio.addEventListener("timeupdate", () => {
   const progress = audio.duration 
     ? (audio.currentTime / audio.duration) * 100 
     : 0;
 
-  progressBar.value = progress; // 🔥 indispensable
-
+  progressBar.value = progress;
   currentTimeEl.textContent = formatTime(audio.currentTime);
 });
 
@@ -115,6 +111,7 @@ audio.addEventListener("loadedmetadata", () => {
   durationEl.textContent = formatTime(audio.duration);
 });
 
+// 🎚 SLIDER
 progressBar.addEventListener("input", () => {
   if (!audio.duration) return;
 
@@ -122,6 +119,7 @@ progressBar.addEventListener("input", () => {
   audio.currentTime = time;
 });
 
+// ⏱ FORMAT
 function formatTime(sec) {
   const minutes = Math.floor(sec / 60);
   const seconds = Math.floor(sec % 60)
@@ -129,3 +127,6 @@ function formatTime(sec) {
     .padStart(2, "0");
   return `${minutes}:${seconds}`;
 }
+
+// INIT
+loadQuestion();
