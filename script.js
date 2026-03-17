@@ -83,6 +83,24 @@ nextBtn.onclick = () => {
     alert("Fin du quiz 🎉");
     current = 0;
   }
+  audio.addEventListener("timeupdate", () => {
+  const progress = (audio.currentTime / audio.duration) * 100;
+  progressBar.value = progress || 0;
+
+  currentTimeEl.textContent = formatTime(audio.currentTime);
+});
+  progressBar.addEventListener("input", () => {
+  const time = (progressBar.value / 100) * audio.duration;
+  audio.currentTime = time;
+});
+ function formatTime(sec) {
+  const minutes = Math.floor(sec / 60);
+  const seconds = Math.floor(sec % 60)
+    .toString()
+    .padStart(2, "0");
+  return `${minutes}:${seconds}`;
+}
+  
 
   loadQuestion();
 };
