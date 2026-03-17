@@ -82,6 +82,7 @@ nextBtn.onclick = () => {
   if (current >= questions.length) {
     alert("Fin du quiz 🎉");
     current = 0;
+  }
 
   loadQuestion();
 };
