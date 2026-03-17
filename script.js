@@ -1,3 +1,6 @@
+const progressBar = document.getElementById("progressBar");
+const currentTimeEl = document.getElementById("currentTime");
+const durationEl = document.getElementById("duration");
 const audio = document.getElementById("audio");
 const playBtn = document.getElementById("playBtn");
 const pauseBtn = document.getElementById("pauseBtn");
