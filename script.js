@@ -52,11 +52,14 @@ function startTimer() {
     if(time === 15){
       document.getElementById("hint2").textContent = questions[current].hints[1];
     }
-    if(time === 20){
-      document.getElementById("answer").textContent = questions[current].answer;
-      navigator.vibrate(500);
-      clearInterval(timer);
-    }
+  if(time === 20){
+  document.getElementById("answer").textContent = questions[current].answer;
+  document.getElementById("moreInfo").style.display = "inline-block";
+
+  if (navigator.vibrate) navigator.vibrate(500);
+
+  clearInterval(timer);
+}
   },1000);
 }
 
