@@ -19,7 +19,7 @@ function playQuestion(q, el) {
   el.classList.add('playing');
 
   // indices
-  document.getElementById("indice1").innerText = "Indice 1...";
+  document.getElementById("Dans le titre").innerText = "Pluie";
   setTimeout(() => {
     document.getElementById("indice2").innerText = "Indice 2...";
   }, 5000);
