@@ -1,5 +1,5 @@
 const audios = {
-  q1: new Audio("audio/q1.mp3"),
+  q1: new Audio("sound\Question 1.mp3"),
   q2: new Audio("audio/q2.mp3"),
   q3: new Audio("audio/q3.mp3")
 };
