@@ -158,3 +158,17 @@ function showAnswer(){
     navigator.vibrate([200,100,200]);
   }
 }
+/* effet dynamique audio */
+.playing{
+  transition:box-shadow 0.1s linear;
+}
+
+/* glow pulsant */
+@keyframes pulse{
+  from{filter:brightness(1);}
+  to{filter:brightness(1.4);}
+}
+
+.playing{
+  animation:pulse 0.6s infinite alternate;
+}
