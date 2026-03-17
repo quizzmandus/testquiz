@@ -76,3 +76,10 @@ button {
   50% { transform: scaleY(2); }
   100% { transform: scaleY(1); }
 }
+.label {
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  font-size: 16px;
+  transform: rotate(-20deg);
+}
