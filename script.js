@@ -44,14 +44,16 @@ function loadQuestion() {
   hint2.textContent = "";
   answer.textContent = "";
 
+  // 🔥 reset propre ici
+  audio.pause();
+  audio.currentTime = 0;
+
+  progressBar.value = 0;
+  currentTimeEl.textContent = "0:00";
+  durationEl.textContent = "0:00";
+
   clearTimers();
 }
-
-playBtn.onclick = () => {
-  audio.play();
-  const q = questions[current];
-
-  clearTimers();
 
   timers.push(setTimeout(() => {
     hint1.textContent = "Indice 1 : " + q.hint1;
@@ -104,7 +106,7 @@ durationEl.textContent = "0:00";
     ? (audio.currentTime / audio.duration) * 100 
     : 0;
 
-  progressBar.value = progress; // 🔥 manquant
+  progressBar.value = progress; // 🔥 indispensable
 
   currentTimeEl.textContent = formatTime(audio.currentTime);
 });
