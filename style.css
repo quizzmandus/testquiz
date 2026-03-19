@@ -111,20 +111,6 @@ button {
   position: relative;
 }
 
-/* Encoche (optionnel, style iPhone) */
-.phone::before {
-  content: "";
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 150px;
-  height: 25px;
-  background: #000;
-  border-radius: 20px;
-  z-index: 10;
-}
-
 /* Contenu intérieur scrollable */
 .phone-screen {
   width: 100%;
